@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock-Paper-Scissors-Game</title>
+    <link rel="stylesheet" href="./css/rpc.css" />
+  </head>
+  <body style="margin-bottom: 200px; margin-left: 20px;">
+    <div>
+        <div class="header-content">
+          ROCK-PAPER-SCISSORS-LIZARD-SPOCK
+          <!-- <img src="../pics/rock-emoji.png" alt="ROCK" class="pic-button1" />
+          <img src="../pics/paper-emoji.png" alt="PAPER" class="pic-button1" />
+          <img src="../pics/scissors-emoji.png" alt="SCISSORS" class="pic-button1"/> -->
+          <img src="./pics/sheldon.png" alt="sheldon" class="pic-button1">
+        </div>
+        <div class="main">
+          <button onclick="cmpCh('rock')" class="buttons">
+              <img src="./pics/rock-emoji.png" alt="ROCK" class="pic-button" />
+          </button>
+          <button onclick="cmpCh('paper')" class="buttons">
+            <img src="./pics/paper-emoji.png" alt="PAPER" class="pic-button" />
+          </button>
+          <button onclick="cmpCh('scissors')" class="buttons">
+            <img src="./pics/scissors-emoji.png" alt="SCISSORS" class="pic-button"/>
+          </button>
+          <button onclick="cmpCh('lizard')" class="buttons">
+            <img src="./pics/lizard-emoji.png" alt="LIZARD" class="pic-button"/>
+          </button>
+          <button onclick="cmpCh('spock')" class="buttons">
+            <img src="./pics/spock-emoji.png" alt="SPOCK" class="pic-button"/>
+          </button>
+          <button onclick="reset()" class="reset-button" style="margin-left: 100px;">
+            RESET SCORE
+          </button>
+        
+          <p class="result"></p>
+          <p class="choices" style="margin: 20px auto;"></p>
+          <p class="score">Wins:0, Losses:0, Ties:0</p>
+    
+          
+          <div class="history" style="text-align: right; margin-right: 50px;"></div>
+        </div>
+    </div>
+
+  
+
+
+      <script>
+        let compCh;
+        let cempCh;
+        let result;
+        let score = {
+          wins: 0,
+          losses: 0,
+          ties: 0,
+        };
+        score = JSON.parse(localStorage.getItem("score")) || {
+          wins: 0,
+          losses: 0,
+          ties: 0,
+        };
+        let hist = [];
+        function cmpCh(ch) {
+          if (hist.length !== 7) {
+            compCh = Math.random() * 5;
+            if (compCh < 1) {
+              cempCh = "rock";
+              if (ch === "rock") result = "its a tie";
+              else if (ch === "scissors") result = "you lose";
+              else if(ch=== "paper") result = "you win";
+              else if(ch=== "lizard") result = "you lose";
+              else result = "you win";
+            } else if (compCh < 2) {
+              cempCh = "paper";
+              if (ch === "paper") result = "its a tie";
+              else if (ch === "rock") result = "you lose";
+              else if(ch === "scissors") result = "you win";
+              else if(ch=== "lizard") result = "you win";
+              else result = "you lose";
+            } else if(compCh<3) {
+              cempCh = "scissors";
+              if (ch === "scissors") result = "its a tie";
+              else if (ch === "paper") result = "you lose";
+              else if(ch==="rock") result="you win";
+              else if(ch==="lizard") result="you lose"
+              else result = "you win";
+            } else if(compCh<4) {
+              cempCh="lizard";
+              if (ch === "lizard") result = "its a tie";
+              else if (ch === "paper") result = "you lose";
+              else if(ch === "scissors") result = "you win";
+              else if(ch=== "rock") result = "you win";
+              else result = "you lose";
+            } else {
+              cempCh="spock";
+              if (ch === "spock") result = "its a tie";
+              else if (ch === "rock") result = "you lose";
+              else if(ch === "paper") result = "you win";
+              else if(ch=== "lizard") result = "you win";
+              else result = "you lose";
+            }
+            if (result === "you win") {
+              score.wins++;
+            } else if (result === "you lose") {
+              score.losses++;
+            } else if (result === "its a tie") {
+              score.ties++;
+            }
+            localStorage.setItem("score", JSON.stringify(score));
+
+            document.querySelector(".result").innerHTML = result;
+
+            document.querySelector(
+              ".choices"
+            ).innerHTML = `YOU  <img src="../pics/${ch}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="../pics/${cempCh}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER `;
+
+            document.querySelector(
+              ".score"
+            ).innerText = `Wins:${score.wins}, Losses:${score.losses}, Ties:${score.ties}`;
+            let histHtml = "<h3><u>MATCH SUMMARY</u></h3>";
+            hist.push({ cc: cempCh, yc: ch, result: result });
+            //hist.reverse();
+            for (let i = hist.length - 1; i >= 0; i--) {
+              const html = `<p>YOU  <img src="../pics/${hist[i].yc}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="../pics/${hist[i].cc}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER and ${hist[i].result}.</p>`;
+              histHtml += html;
+            }
+            document.querySelector(".history").innerHTML = histHtml;
+          }
+
+          if (hist.length === 7) {
+            if (score.wins > score.losses)
+              document.querySelector(".result").innerHTML = "YOU WON THE GAME";
+            else if (score.wins < score.losses)
+              document.querySelector(".result").innerHTML = "YOU LOST THE GAME";
+            else document.querySelector(".result").innerHTML = "GAME TIED";
+            document.querySelector(".choices").innerHTML = "";
+            //document.querySelector(".result").innerHTML = "";
+            //document.querySelector(".history").innerHTML = "";
+          }
+        }
+        function reset() {
+          score = { wins: 0, losses: 0, ties: 0 };
+          document.querySelector(
+            ".score"
+          ).innerText = `Wins:${score.wins}, Losses:${score.losses}, Ties:${score.ties}`;
+          localStorage.removeItem("score");
+          document.querySelector(".choices").innerHTML = "";
+          document.querySelector(".result").innerHTML = "";
+          document.querySelector(".history").innerHTML = "";
+          hist = [];
+        }
+        function history() {}
+      </script>
+    
+  </body>
+</html>
