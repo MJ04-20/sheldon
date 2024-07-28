@@ -114,7 +114,7 @@
 
             document.querySelector(
               ".choices"
-            ).innerHTML = `YOU  <img src="../pics/${ch}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="../pics/${cempCh}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER `;
+            ).innerHTML = `YOU  <img src="./pics/${ch}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="./pics/${cempCh}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER `;
 
             document.querySelector(
               ".score"
@@ -123,7 +123,7 @@
             hist.push({ cc: cempCh, yc: ch, result: result });
             //hist.reverse();
             for (let i = hist.length - 1; i >= 0; i--) {
-              const html = `<p>YOU  <img src="../pics/${hist[i].yc}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="../pics/${hist[i].cc}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER and ${hist[i].result}.</p>`;
+              const html = `<p>YOU  <img src="./pics/${hist[i].yc}-emoji.png" alt="SCISSORS" class="pic-button"> <img src="./pics/${hist[i].cc}-emoji.png" alt="SCISSORS" class="pic-button"> COMPUTER and ${hist[i].result}.</p>`;
               histHtml += html;
             }
             document.querySelector(".history").innerHTML = histHtml;
